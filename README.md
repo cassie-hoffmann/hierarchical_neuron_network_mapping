@@ -3,7 +3,7 @@
 This pipeline quantifies the network structure of in vitro neuron ensembles from optical microscopy images. It can be implemented to characterise neuron self-organisation behaviours across healthy or perturbed states. For example, the segmentations in Figure 1 show healthy neurons organising from a random into modular network structure, which increases local and global network efficiency.
 Within the pipeline, a network graph is generated from neuron morphology where somata are encoded as nodes (displayed in orange) and neurites as edges (displayed in grey). Graph theoretical analysis is then used to quantify key features of network topology.
 
-
+<img width="1035" height="419" alt="Screenshot 2026-04-09 at 3 37 13 pm" src="https://github.com/user-attachments/assets/9fecdcee-909c-456e-82a7-c48e3f649e87" />
 
 Figure 1.
 
