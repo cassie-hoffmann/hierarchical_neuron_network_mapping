@@ -9,10 +9,10 @@ function network_reconstruction_2d
     av_soma_size = x; %average size of individual soma in pixels
     proportions = [1]; %replace with proportion for inter-cluster connectivity ranging from 0.1 to 1
     filetype = '*.tiff'; %file type of input images
-    som_thresh_min = x; %pixel value of somata objects in segmentation
-    som_thresh_max = x; %pixel value of somata objects in segmentation
-    neur_thresh_min = x; %pixel value of somata objects in segmentation
-    neur_thresh_max = x; %pixel value of somata objects in segmentation 
+    som_thresh_min = x; %minimum pixel value of somata objects
+    som_thresh_max = x; %maximum pixel value of somata objects
+    neur_thresh_min = x; %minimum pixel value of neurite objects
+    neur_thresh_max = x; %maximum pixel value of neurite objects
 
     som_filter = x; % lower size threshold (pixels) for valid somata objects
     neurite_filter = x; % lower size threshold (pixels) for valid neurite objects
