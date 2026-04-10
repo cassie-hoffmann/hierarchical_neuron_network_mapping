@@ -1,14 +1,19 @@
 function network_reconstruction_2d
 
     clear all; close all;
+    %% user input
+
     input_folder = "/path/to/input/folder";
-    av_soma_size = x; %average size of individual soma in pixels
     output_folder = "/path/to/output/folder";
-    
+
+    av_soma_size = x; %average size of individual soma in pixels
     proportions = [1]; %replace with proportion for inter-cluster connectivity ranging from 0.1 to 1
     filetype = '*.tiff'; %file type of input images
-    som_seg = x; %pixel value of somata objects in segmentation 
-    neurite_seg = x; %pixel value of neurite objects in segmentation
+    som_thresh_min = x; %pixel value of somata objects in segmentation
+    som_thresh_max = x; %pixel value of somata objects in segmentation
+    neur_thresh_min = x; %pixel value of somata objects in segmentation
+    neur_thresh_max = x; %pixel value of somata objects in segmentation 
+
     som_filter = x; % lower size threshold (pixels) for valid somata objects
     neurite_filter = x; % lower size threshold (pixels) for valid neurite objects
     ang_dil_90_130 = x; % angular neurite dilation - 90-130 degrees (upper right orientation)
@@ -17,7 +22,9 @@ function network_reconstruction_2d
     ang_dil_0_69 = x;% angular neurite dilation - 0-69 degrees (left orientation)
     ang_dil_filter = x; % secondary neurite size filter for each orientation mask
     visualize = 1; % 1 = visualise network, 0 = do not visualize network
-    
+
+
+    %% end of user input    
     
     %% Store files in cell array
     
@@ -42,15 +49,15 @@ function network_reconstruction_2d
         node_point_coords = [];
     
         image = double(imagesData{time});
-        img_nodes_dil = image == som_seg;
-        neurite_image = image == neurite_seg;
+        img_som_dil = image >= som_thresh_min & image <= som_thresh_max;
+        img_neur_dil = image >= neur_thresh_min & image <= neur_thresh_max;
     
-        img_nodes_dil = bwareaopen(img_nodes_dil, som_filter);
-        neurite_image = bwareaopen(neurite_image, neurite_filter);
+        img_som_dil = bwareaopen(img_som_dil, som_filter);
+        img_neur_dil = bwareaopen(img_neur_dil, neurite_filter);
         cluster_ct = 0;
     
         %parse neurite mask into angular orientation masks
-        [image_b, image_g, image_p, image_r] = isolate_angular_neurites_split(neurite_image, ang_dil_131_180,ang_dil_90_130,ang_dil_70_89,ang_dil_0_69, ang_dil_filter);
+        [image_b, image_g, image_p, image_r] = isolate_angular_neurites_split(img_neur_dil, ang_dil_131_180,ang_dil_90_130,ang_dil_70_89,ang_dil_0_69, ang_dil_filter);
         image_b = bwmorph(image_b, "skel", Inf); image_g = bwmorph(image_g, "skel", Inf); image_p = bwmorph(image_p, "skel", Inf);image_r = bwmorph(image_r, "skel", Inf);
     
         N=[size(image_b,1),size(image_b,2)];
@@ -98,8 +105,8 @@ function network_reconstruction_2d
         SubdivideNodes=1;
         ct=0;
     
-        ind=find(img_nodes_dil==1);
-        nodes=zeros(size(img_nodes_dil));
+        ind=find(img_som_dil==1);
+        nodes=zeros(size(img_som_dil));
         nodes(ind)=1;          %set nodes to a value of 1
         nodes=medfilt2(nodes);  %remove speckles in image
         N=size(nodes);
@@ -310,3 +317,4 @@ function network_reconstruction_2d
     end
 
 end
+
