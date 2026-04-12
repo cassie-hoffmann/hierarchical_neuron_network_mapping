@@ -23,7 +23,6 @@ function network_reconstruction_2d
     ang_dil_filter = x; % secondary neurite size filter for each orientation mask
     visualize = 1; % 1 = visualise network, 0 = do not visualize network
 
-
     %% end of user input    
     
     %% Store files in cell array
@@ -140,20 +139,31 @@ function network_reconstruction_2d
                         y_means_temp(j,:) = mean(row(idx == j));
                         x_means_temp(j,:) = mean(col(idx == j));
                     end
-    
+
                     x_means_clusters{cluster_ct,:} = x_means_temp; % store x-means for this node
                     y_means_clusters{cluster_ct,:} = y_means_temp; % store y-means for this node
                     intracluster_adj_size = ct-first_ct+1;
-                    adj(first_ct:ct,first_ct:ct)=1;
-    
+                    intracluster_adj_size = ct - first_ct + 1;
+                    n = intracluster_adj_size;
+
+                    adj(first_ct:ct, first_ct:ct) = 0;
+                    num_possible_edges = n * (n - 1) / 2;
+                    num_edges = round(proportions * num_possible_edges);
+                    upper_idx = find(triu(ones(n), 1));
+                    selected_edges = upper_idx(randperm(length(upper_idx), num_edges));
+                    temp_block = zeros(n);
+                    temp_block(selected_edges) = 1;
+                    temp_block = temp_block + temp_block';
+                    adj(first_ct:ct, first_ct:ct) = temp_block;
+
                 else
-    
+
                     ct=ct+1;
                     nodes(cc.PixelIdxList{i})=ct;
                 end
                 adj(logical(eye(size(adj)))) = 0;
                 master_adj_proportions{p}=adj; %just clusters
-    
+
             end
     
             fprintf('%d nodes, subdivided to %d nodes\n',nNodes,ct);
@@ -317,4 +327,3 @@ function network_reconstruction_2d
     end
 
 end
-
