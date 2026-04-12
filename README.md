@@ -34,7 +34,7 @@ For hierarchical mode, please run ‘network_reconstruction_multiscale.m’. The
 **Unimodal mode**
 
 For unimodal mode, please run ‘network_reconstruction_2d.m’. This mode is designed for rapid processing of single-modality 2D microscopy datasets, such as those containing widefield images alone. In the absence of 3D super-resolution imaging inputs, the pipeline interpolates cell configurations within clusters via morphological heuristics. 
-The input is segmentations/raw images of 2D mesoscale neuron populations, and the output is the same as hierarchical mode above. To facilitate cluster interpolation, the user must specify (i) the expected size of a single neuron soma and (ii) the desired proportion of within-cluster connectivity. For example, Figure 3a shows a network ROI with 10% within-cluster connectivity, while Figure 3b shows 90% within-cluster connectivity. For proportions lower than 100%, edge placement follows a distance-decay law. 
+The input is segmentations/raw images of 2D mesoscale neuron populations, and the output is the same as hierarchical mode above. To facilitate cluster interpolation, the user must specify (i) the expected size of a single neuron soma and (ii) the desired proportion of within-cluster connectivity. For example, Figure 3a shows a network ROI with 10% within-cluster connectivity, while Figure 3b shows 90% within-cluster connectivity. 
 
 *Figure 3.* 
 
